@@ -60,12 +60,12 @@ function buildInfo (obj,arr,size_cell_info){
 
     obj.angle =angle_last.toFixed(2);
 
-    for(var i=0;i<obj.child_len;i++){
+    //for(var i=0;i<obj.child_len;i++){
         var ratio = rand_float(size_cell_info[3],size_cell_info[4]);
         var x_x = Math.round(size * ratio * Math.cos(angle_last));
         var y_y = Math.round(size * ratio * Math.sin(angle_last));
         obj.pos_next.push([x_x,y_y]);
-    }
+    //}
 
 }
 
@@ -76,41 +76,45 @@ function TREE_MAIN(){
 }
 //foreach
 var time = 0;
-function inOrder(parent){
+function inOrder(node){
+    //---------------------------------------------------------------------------------
+    console.log("time:"+time);
+    //if(time>=4){
+    //    return false;
+    //}
     time ++;
+    var parent = node;
     var current;
-    for(var i = 0;i < parent.child_len;i++){
-        current = parent.ccc[i];
-        console.log("par:"+time+parent.angle);
-        if(current != null){
-            parent = current;
-            inOrder(current);
-        }else{
-            for(var j=0;j < parent.child_len;j++){
-                var arr =[parent.pos_next[j][0],parent.pos_next[j][1],parent.angle];
-                var nn = new cell(arr,size_cell_info);
-                parent.ccc[j] = nn;
+
+    if(parent != null){
+        for(var i = 0;i<parent.child_len;i++){
+            current = parent.ccc[i];
+            if(current == null){
+                var n = new cell([33,34,Math.PI/2],size_cell_info);
+                parent.ccc[i]=n;
+            }else{
+                parent = current;
+                inOrder(parent);
             }
         }
     }
-    //if(current != null){
-    //    parent = current;
-    //    for(var i = 0;i<parent.child_len;i++){
-    //        current = parent.ccc[i];
-    //        inOrder(parent.ccc[i],parent);
-    //    }
-    //}else{
-    //    parent = current;
-    //    for(var j=0;j < parent.child_len;j++){
-    //        current = current.ccc[j];
-    //        //if(current == null){
+    //---------------------------------------------------------------------------------
+    //time ++;
+    //var current;
+    //for(var i = 0;i < parent.child_len;i++){
+    //    current = parent.ccc[i];
+    //    console.log("par:"+time+parent.angle);
+    //    console.log("cur:"+time+current);
+    //    if(current != null){
+    //        parent = current;
+    //        inOrder(current);
+    //    }else{
+    //        for(var j=0;j < parent.child_len;j++){
     //            var arr =[parent.pos_next[j][0],parent.pos_next[j][1],parent.angle];
     //            var nn = new cell(arr,size_cell_info);
     //            parent.ccc[j] = nn;
-    //        //}
+    //        }
     //    }
-    //
-    //
     //}
 }
 
