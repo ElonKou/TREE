@@ -72,13 +72,13 @@ function TREE_MAIN(){
 var time = 0;
 function inOrder(node){
     //---------------------------------------------------------------------------------
-    console.log("Deep_time:"+time+"----angle:"+node.angle+"----id:"+node.id);
+    //console.log("Deep_time:"+time+"----angle:"+node.angle+"----id:"+node.id);
     if(time>=40){
         return false;
     }
     time ++;
     var parent = node;
-    var current = node;
+    var current;
 
 
     if(parent != null){
@@ -88,32 +88,21 @@ function inOrder(node){
             console.log("par_id:"+parent.id);
             var no,par;
             if(current == null){
-                //console.log(parent);
                 var ar =[parent.pos_next[i][0],parent.pos_next[i][1],parent.angle,parent.pos_all[0],parent.pos_all[1]];
                 console.log(ar);
                 no = new cell(ar,size_cell_info);
                 parent.ccc[i] = no;
+                //current = no;
                 //var n = new cell([33,34,Math.PI/2,99,99],size_cell_info);
                 //parent.ccc[i] = n;
             }else{
-                par = current;
-                inOrder(par);
+                //par = current;
+                parent = current;
+                inOrder(parent);
             }
         }
     }
 
-    function getParentInfo(pId){
-        var arr =[];
-
-
-
-        return arr;
-    }
-    function order(node){
-        if(node == null){
-            
-        }
-    }
     //---------------------------------------------------------------------------------
     //if(parent != null){
     //    for(var i = 0;i<parent.child_len;i++){
