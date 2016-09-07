@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    var id=0;
+    function bran(num){
+        this.name = "bran_name_"+id;
+        id++;
+        this.num =num;
+        this.chil = [];
+        for(var i=0;i<3;i++){
+            this.chil[i] = ["wewewe","dedede"];
+        }
+    }
+    function hh(){
+        this.root = null;
+        this.ran = ran();
+    }
+    function ran(){
+        if(this.root == null){
+            var n = new bran(23);
+            this.root = n;
+        }else{
+            var parent = this.root;
+            var current;
+        }
+    }
+</script>
+</body>
+</html>

@@ -24,27 +24,16 @@ function www(e,canvas,info){
 
 //----------------------------------------------------------------
 
-
+var id = 0;
 function cell(arr,size_cell_info){
     //the cell start&end position
-    this.pos_all=[0,0,0,0];
+    this.id = id;
+    id++;
+    this.pos_all=[];
     this.pos_next = [];
-    this.angle = null;
-    this.child_len = rand(0,4);
+    //this.angle = null;
+    this.child_len = rand(1,3);
     this.ccc = [];
-    for(var i = 0;i<this.child_len;i++){
-        this.ccc[i]=null;
-        buildInfo(this,arr,size_cell_info);
-    }
-}
-function cau(){
-    this.pos_all[2] = rand(this.pos_all[0],0);
-}
-
-
-//return Array contains new position of Cell
-function buildInfo (obj,arr,size_cell_info){
-    //new position
 
     var ang = (arr[2]+Math.PI/2)/2;
     var angle_last = rand_float(ang-size_cell_info[2]/2,size_cell_info[2]);
@@ -52,22 +41,27 @@ function buildInfo (obj,arr,size_cell_info){
     var x = Math.round(size*Math.cos(angle_last));
     var y = Math.round(size*Math.sin(angle_last));
 
-    //set positon of cell
-    obj.pos_all[0]=arr[0];
-    obj.pos_all[1]=arr[1];
-    obj.pos_all[2]=x+arr[0];
-    obj.pos_all[3]=y+arr[1];
+    this.pos_all[0]=arr[0];
+    this.pos_all[1]=arr[1];
+    this.pos_all[2]=x+arr[0];
+    this.pos_all[3]=y+arr[1];
+    this.angle = angle_last.toFixed(2);
 
-    obj.angle =angle_last.toFixed(2);
 
-    for(var i=0;i<obj.child_len;i++){
+    for(var i = 0;i<this.child_len;i++){
+        this.ccc[i]=null;
+        //-------------------
         var ratio = rand_float(size_cell_info[3],size_cell_info[4]);
         var x_x = Math.round(size * ratio * Math.cos(angle_last));
         var y_y = Math.round(size * ratio * Math.sin(angle_last));
-        obj.pos_next.push([x_x,y_y]);
+        this.pos_next.push([x_x+arr[3],y_y+arr[4]]);
+        //this.pos_next.push(x_x+arr[3]);
+        //this.pos_next.push(y_y+arr[4]);
+        //-------------------
     }
-
 }
+
+
 
 function TREE_MAIN(){
     this.root = null;
@@ -76,69 +70,91 @@ function TREE_MAIN(){
 }
 //foreach
 var time = 0;
-function inOrder(parent){
+function inOrder(node){
+    //---------------------------------------------------------------------------------
+    //console.log("Deep_time:"+time+"----angle:"+node.angle+"----id:"+node.id);
+    if(time>=40){
+        return false;
+    }
     time ++;
+    var parent = node;
     var current;
-    for(var i = 0;i < parent.child_len;i++){
-        current = parent.ccc[i];
-        console.log("par:"+time+parent.angle);
-        if(current != null){
-            parent = current;
-            inOrder(current);
-        }else{
-            for(var j=0;j < parent.child_len;j++){
-                var arr =[parent.pos_next[j][0],parent.pos_next[j][1],parent.angle];
-                var nn = new cell(arr,size_cell_info);
-                parent.ccc[j] = nn;
+
+
+    if(parent != null){
+        for(var i = 0; i < parent.child_len;i++){
+            current = parent.ccc[i];
+            //console.log(parent.ccc[i]);
+            console.log("par_id:"+parent.id);
+            var no,par;
+            if(current == null){
+                var ar =[parent.pos_next[i][0],parent.pos_next[i][1],parent.angle,parent.pos_all[0],parent.pos_all[1]];
+                console.log(ar);
+                no = new cell(ar,size_cell_info);
+                parent.ccc[i] = no;
+                //current = no;
+                //var n = new cell([33,34,Math.PI/2,99,99],size_cell_info);
+                //parent.ccc[i] = n;
+            }else{
+                //par = current;
+                parent = current;
+                inOrder(parent);
             }
         }
     }
-    //if(current != null){
-    //    parent = current;
+
+    //---------------------------------------------------------------------------------
+    //if(parent != null){
     //    for(var i = 0;i<parent.child_len;i++){
+    //        var arr =[parent.pos_next[i][0],parent.pos_next[i][1],parent.angle,parent.pos_all[0],parent.pos_all[1]];
     //        current = parent.ccc[i];
-    //        inOrder(parent.ccc[i],parent);
+    //        if(current == null){
+    //            //console.log(arr);
+    //            //var n = new cell([33,34,Math.PI/2],size_cell_info);
+    //            var n = new cell(arr,size_cell_info);
+    //            parent.ccc[i]=n;
+    //        }else{
+    //            parent = current;
+    //            inOrder(parent);
+    //        }
+    //        //inOrder(parent.ccc[i]);
     //    }
-    //}else{
-    //    parent = current;
-    //    for(var j=0;j < parent.child_len;j++){
-    //        current = current.ccc[j];
-    //        //if(current == null){
+    //}
+
+
+    //---------------------------------------------------------------------------------
+    //time ++;
+    //var current;
+    //for(var i = 0;i < parent.child_len;i++){
+    //    current = parent.ccc[i];
+    //    console.log("par:"+time+parent.angle);
+    //    console.log("cur:"+time+current);
+    //    if(current != null){
+    //        parent = current;
+    //        inOrder(current);
+    //    }else{
+    //        for(var j=0;j < parent.child_len;j++){
     //            var arr =[parent.pos_next[j][0],parent.pos_next[j][1],parent.angle];
     //            var nn = new cell(arr,size_cell_info);
     //            parent.ccc[j] = nn;
-    //        //}
+    //        }
     //    }
-    //
-    //
     //}
 }
 
 function build(size_cell_info){
     if(this.root == null){
-        arr = [540,300,Math.PI/2];
+        var arr = [540,300,Math.PI/2,540,340];
         var n =  new cell(arr,size_cell_info);
         this.root = n;
     }else{
-        var parent = this.root;
+        var node = this.root;
         //var current = this.root;
         //var parent;
 
-        inOrder(parent);
-
-        //while(true){
-        //    parent = current;
-        //
-        //    for(var i=0;i < parent.child_len;i++){
-        //        current = current.ccc[i];
-        //        if(current == null){
-        //            //build arr info
-        //            var arr =[parent.pos_next[i][0],parent.pos_next[i][1],parent.angle];
-        //            n = new cell(arr,size_cell_info);
-        //            parent.ccc[i] = n;
-        //        }
-        //    }
-        //}
+        console.log(node);
+        console.log("---------------------------");
+        inOrder(node);
     }
 }
 
@@ -156,10 +172,13 @@ tr.build(size_cell_info);
 //tr.build(40,50,Math.PI/6,0.7,0.3);
 //tr.build(30,60,Math.PI/6,0.8,0.2);
 //tr.build(30,60,Math.PI/6,0.8,0.2);
-//tr.build(30,60,Math.PI/6,0.8,0.2);
+tr.build(30,60,Math.PI/6,0.8,0.2);
 tr.build(30,60,Math.PI/6,0.8,0.2);
 console.log(tr);
 //---------------------------------------------------------------
+
+
+
 
 
 function rand(start,range){
