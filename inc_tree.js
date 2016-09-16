@@ -117,7 +117,7 @@ function draw(arr,ww){
 
     ctx.beginPath();
 
-    ctx.strokeStyle = radgrad_2;
+    //ctx.strokeStyle = radgrad_2;
     ctx.lineCap = 'round';
     ctx.lineWidth = ww;
     ctx.moveTo(arr[0],arr[1]);
@@ -128,7 +128,7 @@ function draw(arr,ww){
 function drawT(x,y,r){
     ctx.beginPath();
 
-    ctx.fillStyle = radgrad_1;
+    //ctx.fillStyle = radgrad_1;
     ctx.moveTo(x,y);
     ctx.quadraticCurveTo(x-r,y-r,x-r,y-2*r);
     ctx.quadraticCurveTo(x-r,y-3*r,x,y-3*r);
