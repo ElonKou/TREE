@@ -24,29 +24,32 @@ function www(e,canvas,info){
 
 //----------------------------------------------------------------
 
-var id = 0;
+//var id = 0;
 function cell(arr,size_cell_info,lineWidth,num){
     //the cell start&end position
-    this.id = id;
-    id++;
+    //this.id = id;
+    //id++;
     this.pos_all=[];
     this.pos_next = [];
     //this.angle = null;
     this.child_len = rand(1,num);
+    this.scale = rand_float(0.3,1.0).toFixed(2);
     this.ccc = [];
 
-    var ang = (parseFloat(arr[2])+1.5708)/2;
+    //scale the size by angle
+    //var ang = (parseFloat(arr[2])+1.5708)/2;
 
     var angle_last = rand_float(ang-size_cell_info[2]/2,size_cell_info[2]);
+    this.angle = angle_last.toFixed(2);
     var size = rand(size_cell_info[0],size_cell_info[1]);
-    var x = Math.round(size*Math.cos(angle_last));
-    var y = Math.round(size*Math.sin(angle_last));
+    size = size * this.scale;
+    var x = Math.round(size*Math.cos(this.angle));
 
+    var y = Math.round(size*Math.sin(this.angle));
     this.pos_all[0]=arr[0];
     this.pos_all[1]=arr[1];
     this.pos_all[2]=x+arr[0];
     this.pos_all[3]=arr[1]-y;
-    this.angle = angle_last.toFixed(2);
 
 
     for(var i = 0;i<this.child_len;i++){
@@ -59,7 +62,7 @@ function cell(arr,size_cell_info,lineWidth,num){
         //-------------------
     }
     draw(this.pos_all,lineWidth);
-    drawT(this.pos_all[2],this.pos_all[3],lineWidth+3);
+    //drawT(this.pos_all[2],this.pos_all[3],lineWidth+3);
 }
 
 
@@ -141,8 +144,8 @@ function drawT(x,y,r){
 
 var size_start = 50;
 var size_end = 150;
-var angle_range = Math.PI/2;
-var size_pos_start = 0.7;
+var angle_range = Math.PI/2.6;
+var size_pos_start = 0.8;
 var size_pos_end= 0.2;
 var size_cell_info = [size_start,size_end,angle_range,size_pos_start,size_pos_end];
 
